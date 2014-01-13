@@ -1,4 +1,4 @@
 snakeworld
 ==========
 
-A multiplayer snake
+A multiplayer infinity snake
