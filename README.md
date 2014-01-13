@@ -1,0 +1,4 @@
+snakeworld
+==========
+
+A multiplayer snake
