@@ -24,7 +24,7 @@
 
 
 		// Draw grid in canvas
-		this.canvas.drawGrid.bind(this)();
+		this.drawGrid();
 
 	};
 
@@ -47,34 +47,30 @@
 	};
 
 	// Grid functions
-	snakeWorld.prototype.canvas = {
-		drawGrid: function() {
+	snakeWorld.prototype.drawGrid = function() {
 
-			var it = 0,
-			    ctx = this.vars.context,
-			    pixelWidth = this.vars.canvas.width / this.vars.grid.width,
-			    pixelHeight = this.vars.canvas.height / this.vars.grid.height;
+		var it = 0,
+		    ctx = this.vars.context,
+		    pixelWidth = this.vars.canvas.width / this.vars.grid.width,
+		    pixelHeight = this.vars.canvas.height / this.vars.grid.height;
 
-			console.log(this.vars.grid);
+		ctx.strokeStyle = '#cccccc';
 
-			ctx.strokeStyle = '#cccccc';
-
-			for( it=0; it<=this.vars.grid.width; it++ ) {
-				ctx.beginPath();
-				ctx.moveTo( it * pixelWidth, 0 );
-				ctx.lineTo( it * pixelWidth, this.vars.canvas.height );
-				ctx.stroke();
-			}
-
-			for( it=0; it<=this.vars.grid.height; it++ ) {
-				ctx.beginPath();
-				ctx.moveTo( 0, it * pixelHeight, 0 );
-				ctx.lineTo( this.vars.canvas.width, it * pixelHeight );
-				ctx.stroke();
-			}
-
+		for( it=0; it<=this.vars.grid.width; it++ ) {
+			ctx.beginPath();
+			ctx.moveTo( it * pixelWidth, 0 );
+			ctx.lineTo( it * pixelWidth, this.vars.canvas.height );
+			ctx.stroke();
 		}
-	};
+
+		for( it=0; it<=this.vars.grid.height; it++ ) {
+			ctx.beginPath();
+			ctx.moveTo( 0, it * pixelHeight, 0 );
+			ctx.lineTo( this.vars.canvas.width, it * pixelHeight );
+			ctx.stroke();
+		}
+
+	}
 
 	window.snakeWorld = snakeWorld;
 
