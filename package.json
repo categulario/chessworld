@@ -1,0 +1,11 @@
+{
+	"name": "SnakeWorld",
+	"version": "0.0.1",
+	"description": "A multiplayer snake game, with an infinite world",
+	"homepage": "setme",
+	"keywords": ["snake", "game", "multiplayer"],
+	"license": "setme",
+	"dependencies": {
+		"socket.io": "0.9.15"
+	}
+}
