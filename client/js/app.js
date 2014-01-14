@@ -2,18 +2,14 @@
 
 	"use strict";
 
-	var snakeWorld = function( canvas ) {
+	var snakeWorld = function( _canvas ) {
+		if(! _canvas instanceof HTMLCanvasElement)
+			throw new Error('Invalid element');
 
 		// Get context and specify canvas vars
-		var $canvas = this.vars.$canvas = $(canvas);
+		this.vars.canvas = _canvas;
 
-		if( !$canvas.length ) {
-			console.log($canvas);
-			throw "Canvas not found";
-			return;
-		}
-
-		canvas = this.vars.canvas = $canvas[0];
+		var canvas = this.vars.canvas;
 		this.vars.context = canvas.getContext('2d');
 
 		// Init socket and bind event listeners
@@ -25,7 +21,6 @@
 
 		// Draw grid in canvas
 		this.drawGrid();
-
 	};
 
 	// Default vars
@@ -96,5 +91,14 @@
 })();
 
 $(function(){
-	new snakeWorld( '#canvas' );
+	/**
+	 * set the canvas with and height
+	 */
+	var width = $(window).width();
+	var height = $(window).height();
+
+	$('#canvas').attr('width', width);
+	$('#canvas').attr('height', height);
+
+	new snakeWorld( $('#canvas')[0] );
 });
