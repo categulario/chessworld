@@ -18,7 +18,6 @@
 		socket.on('log', this.socket.log.bind(this));
 		socket.on('snake', this.socket.snake.bind(this));
 
-
 		// Draw grid in canvas
 		this.drawGrid();
 	};
