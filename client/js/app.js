@@ -2,7 +2,7 @@
 
 	"use strict";
 
-	var snakeWorld = function( el ) {
+	window.snakeWorld = function( el ) {
 
 		// Init socket :)
 		var socket = this.vars.socket = io.connect('http://127.0.0.1:8080');
@@ -24,9 +24,6 @@
 			console.log(data);
 		}
 	};
-
-	window.snakeWorld = snakeWorld;
-
 })();
 
 $(function(){
