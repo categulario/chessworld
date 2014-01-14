@@ -25,6 +25,6 @@
 
 })();
 
-$(document).ready(function(){
+$(function(){
 	new snakeWorld( '#canvas' );
 });
