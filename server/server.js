@@ -7,11 +7,11 @@
 		var client_id = clients.length;
 
 		clients.push({
-			id: client_id,
 			snake: {},
 			socket: socket,
 		});
 
+		console.log('client connected, ' + (client_id+1) + ' clients');
 		socket.emit('log', 'connected');
 
 		addPlayer(client_id);
@@ -27,11 +27,12 @@
 
 		// start at some point of 100x50 matrix
 		client.snake = {
+			id: client_id,
 			x: Math.floor(Math.random()*100-50),
 			y: Math.floor(Math.random()*50-25)
 		}
 
-		client.socket.emit('init', client.snake);
+		client.socket.emit('snake', client.snake);
 	}
 
 })();

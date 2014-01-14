@@ -43,10 +43,11 @@
 		},
 		snake: function(data) {
 			console.log(data);
+			this.drawPoint(data.x, data.y);
 		}
 	};
 
-	// Grid functions
+	// Canvas functions
 	snakeWorld.prototype.drawGrid = function() {
 
 		var it = 0,
@@ -69,6 +70,24 @@
 			ctx.lineTo( this.vars.canvas.width, it * pixelHeight );
 			ctx.stroke();
 		}
+
+	}
+
+	snakeWorld.prototype.drawPoint = function(x, y) {
+
+		// adjust
+		// @TODO: make this dinamic
+		x += 50;
+		y += 25;
+
+		var ctx = this.vars.context,
+		    pixelWidth = this.vars.canvas.width / this.vars.grid.width,
+		    pixelHeight = this.vars.canvas.height / this.vars.grid.height;
+
+		ctx.beginPath()
+		ctx.rect(x*pixelWidth, y*pixelHeight, pixelWidth, pixelHeight);
+		ctx.fillStyle = '#343434';
+		ctx.fill();
 
 	}
 
