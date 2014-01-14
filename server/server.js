@@ -3,8 +3,6 @@
 	var server = require('socket.io').listen(8080),
 			clients = [];
 
-	console.log("HERE");
-
 	server.sockets.on('connection', function(socket) {
 		var client_id = clients.length;
 
@@ -22,19 +20,17 @@
 	* addPlayer
 	* ~ Initializes a client's snake
 	*/
-	console.log("HERE");
 
 	function addPlayer(client_id) {
 		var client = clients[client_id];
 
 		// start at some point of 100x100 matrix
 		client.snake = {
-			x: Math.random(0, 100),
-			y: Math.random(0, 100)
+			x: Math.floor(Math.random()*10),
+			y: Math.floor(Math.random()*10)
 		}
 
-		client.socket.emit('snake', client.snake);
+		client.socket.emit('init', client.snake);
 	}
-	console.log("HERE");
 
 })();
