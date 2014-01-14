@@ -2,18 +2,39 @@
 
 	"use strict";
 
-	window.snakeWorld = function( el ) {
+	var snakeWorld = function( canvas ) {
 
-		// Init socket :)
+		// Get context and specify canvas vars
+		var $canvas = this.vars.$canvas = $(canvas);
+
+		if( !$canvas.length ) {
+			console.log($canvas);
+			throw "Canvas not found";
+			return;
+		}
+
+		canvas = this.vars.canvas = $canvas[0];
+		this.vars.context = canvas.getContext('2d');
+
+		// Init socket and bind event listeners
 		var socket = this.vars.socket = io.connect('http://127.0.0.1:8080');
 
 		socket.on('log', this.socket.log.bind(this));
 		socket.on('snake', this.socket.snake.bind(this));
 
+
+		// Draw grid in canvas
+		this.canvas.drawGrid.bind(this)();
+
 	};
 
 	// Default vars
-	snakeWorld.prototype.vars = {};
+	snakeWorld.prototype.vars = {
+		'grid': {
+			'width': 100,
+			'height': 50
+		}
+	};
 
 	// Event bindings for socket io
 	snakeWorld.prototype.socket = {
@@ -24,6 +45,39 @@
 			console.log(data);
 		}
 	};
+
+	// Grid functions
+	snakeWorld.prototype.canvas = {
+		drawGrid: function() {
+
+			var it = 0,
+			    ctx = this.vars.context,
+			    pixelWidth = this.vars.canvas.width / this.vars.grid.width,
+			    pixelHeight = this.vars.canvas.height / this.vars.grid.height;
+
+			console.log(this.vars.grid);
+
+			ctx.strokeStyle = '#cccccc';
+
+			for( it=0; it<=this.vars.grid.width; it++ ) {
+				ctx.beginPath();
+				ctx.moveTo( it * pixelWidth, 0 );
+				ctx.lineTo( it * pixelWidth, this.vars.canvas.height );
+				ctx.stroke();
+			}
+
+			for( it=0; it<=this.vars.grid.height; it++ ) {
+				ctx.beginPath();
+				ctx.moveTo( 0, it * pixelHeight, 0 );
+				ctx.lineTo( this.vars.canvas.width, it * pixelHeight );
+				ctx.stroke();
+			}
+
+		}
+	};
+
+	window.snakeWorld = snakeWorld;
+
 })();
 
 $(function(){
