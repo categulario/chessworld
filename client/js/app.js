@@ -17,6 +17,8 @@
 
 		socket.on('log', this.socket.log.bind(this));
 		socket.on('snake', this.socket.snake.bind(this));
+		socket.on('add', this.socket.add.bind(this));
+		socket.on('remove', this.socket.remove.bind(this));
 
 		// Draw grid in canvas
 		this.drawGrid();
@@ -27,7 +29,8 @@
 		'grid': {
 			'width': 100,
 			'height': 50
-		}
+		},
+		'snakes': {}
 	};
 
 	// Event bindings for socket io
@@ -36,8 +39,16 @@
 			console.log( '[SOCKET LOG]', data );
 		},
 		snake: function(data) {
-			console.log(data);
-			this.drawPoint(data.x, data.y);
+			this.drawPoint(data.x, data.y, 'green');
+		},
+		add: function(data) {
+			this.vars.snakes[ data.id ] = data;
+			this.drawPoint(data.x, data.y, '#343434');
+		},
+		remove: function(id) {
+			var data = this.vars.snakes[id];
+			this.removePoint(data.x, data.y);
+			delete this.vars.snakes[id];
 		}
 	};
 
@@ -67,12 +78,13 @@
 
 	}
 
-	snakeWorld.prototype.drawPoint = function(x, y) {
+	snakeWorld.prototype.drawPoint = function(x, y, color) {
 
 		// adjust
 		// @TODO: make this dinamic
 		x += 50;
 		y += 25;
+		color = color || '#343434';
 
 		var ctx = this.vars.context,
 		    pixelWidth = this.vars.canvas.width / this.vars.grid.width,
@@ -80,9 +92,27 @@
 
 		ctx.beginPath()
 		ctx.rect(x*pixelWidth, y*pixelHeight, pixelWidth, pixelHeight);
-		ctx.fillStyle = '#343434';
+		ctx.fillStyle = color;
 		ctx.fill();
 
+	}
+
+	snakeWorld.prototype.removePoint = function(x, y) {
+
+		// adjust
+		// @TODO: make this dinamic
+		x += 50;
+		y += 25;
+		var color = '#ffffff';
+
+		var ctx = this.vars.context,
+		    pixelWidth = this.vars.canvas.width / this.vars.grid.width,
+		    pixelHeight = this.vars.canvas.height / this.vars.grid.height;
+
+		ctx.beginPath()
+		ctx.rect(x*pixelWidth, y*pixelHeight, pixelWidth, pixelHeight);
+		ctx.fillStyle = color;
+		ctx.fill();
 	}
 
 	window.snakeWorld = snakeWorld;

@@ -1,20 +1,52 @@
 (function(){
 
 	var server = require('socket.io').listen(8080),
-		clients = [];
+		online = {
+			clients: {},
+			inc_id: 0,
+			online: 0
+		};
 
 	server.sockets.on('connection', function(socket) {
-		var client_id = clients.length;
 
-		clients.push({
+		// Add player and initialize positions
+		var client_id = online.inc_id;
+
+		online.clients[client_id] = {
 			snake: {},
 			socket: socket,
-		});
+		};
 
-		console.log('client connected, ' + (client_id+1) + ' clients');
-		socket.emit('log', 'connected');
+		online.inc_id++, online.online++;
 
 		addPlayer(client_id);
+
+
+		// Handle disconnect event
+		socket.on('disconnect', function() {
+			delete online.clients[client_id];
+			online.online--;
+			console.log("   \033[31msnake\033[0m - " + 'client ' + client_id + ' disconnect, ' + online.online + ' online');
+
+			// Send broadcast
+			for(var i in online.clients)
+				if(i != client_id)
+					online.clients[i].socket.emit('remove', client_id);
+
+		});
+
+
+		// Advices
+		console.log("   \033[31msnake\033[0m - " + 'client ' + client_id + ' connected, ' + online.online + ' online');
+		socket.emit('log', 'fully initialized :) - good luck');
+
+		// Send broadcast 
+		for(var i in online.clients)
+			if(i != client_id) {
+				online.clients[i].socket.emit('add', online.clients[ client_id ].snake);
+				socket.emit('add', online.clients[ i ].snake);
+			}
+
 	});
 
 	/*
@@ -23,7 +55,7 @@
 	*/
 
 	function addPlayer(client_id) {
-		var client = clients[client_id];
+		var client = online.clients[client_id];
 
 		// start at some point of 100x50 matrix
 		client.snake = {
