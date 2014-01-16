@@ -2,6 +2,8 @@
 	"name": "SnakeWorld",
 	"version": "0.1",
 	"dependencies": {
-		"hammerjs": "1.0.5"
+		"hammerjs": "1.0.5",
+		"socket.io-client": "0.9.16",
+		"jquery": "1.10.2"
 	}
 }
