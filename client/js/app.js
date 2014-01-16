@@ -130,4 +130,21 @@ $(function(){
 	$('#canvas').attr('height', height);
 
 	new snakeWorld( $('#canvas')[0] );
+
+	$(document).keydown(function(e) {
+		var key = e.which;
+
+		if(key == "37"){
+			// left
+		} else if(key == "38") {
+			// up
+		} else if(key == "39") {
+			// right
+		} else if(key == "40") {
+			// down
+		} else if(key == '32') {
+			// spacebar
+		}
+		//The snake is now keyboard controllable
+	});
 });
