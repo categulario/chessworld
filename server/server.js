@@ -1,5 +1,4 @@
 (function(){
-
 	var server = require('socket.io').listen(8080),
 		online = {
 			clients: {},
@@ -40,7 +39,7 @@
 		console.log("   \033[31msnake\033[0m - " + 'client ' + client_id + ' connected, ' + online.online + ' online');
 		socket.emit('log', 'fully initialized :) - good luck');
 
-		// Send broadcast 
+		// Send broadcast
 		for(var i in online.clients)
 			if(i != client_id) {
 				online.clients[i].socket.emit('add', online.clients[ client_id ].snake);

@@ -1,0 +1,7 @@
+{
+	"name": "SnakeWorld",
+	"version": "0.1",
+	"dependencies": {
+		"hammerjs": "1.0.5"
+	}
+}
