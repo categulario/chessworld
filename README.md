@@ -3,7 +3,11 @@ Multiplayer Infinite Snake
 
 The traditional snake game on multiplayer mode on an infinite world
 
-## Develop requirements
+## Development instructions
 
-* node
-* bower
+* install `debian`, `node`, `git`, `vim`...
+* clone the repo
+* run `npm update`
+* install bower `npm install -g bower`
+* run `bower install`
+* make (and then eat) a sandwich
