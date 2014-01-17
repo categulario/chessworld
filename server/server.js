@@ -34,6 +34,9 @@
 
 		});
 
+		socket.on('move', function(data) {
+			console.log(data);
+		});
 
 		// Advices
 		console.log("   \033[31msnake\033[0m - " + 'client ' + client_id + ' connected, ' + online.online + ' online');

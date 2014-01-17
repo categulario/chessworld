@@ -43,6 +43,7 @@
 			console.log( '[SOCKET LOG]', data );
 		},
 		snake: function(data) {
+			this.vars.id = data.id;
 			this.drawPoint(data.x, data.y, 'green');
 		},
 		add: function(data) {
@@ -120,8 +121,22 @@
 	}
 
 	snakeWorld.prototype.moveLeft = function() {
-		this.vars.
+		this.vars.socket.emit('move', {
+			id: this.vars.id,
+			x: -1,
+			y: 0,
+		});
 	}
+	snakeWorld.prototype.moveRight = function() {
+		console.log('right');
+	}
+	snakeWorld.prototype.moveUp = function() {
+		console.log('up');
+	}
+	snakeWorld.prototype.moveDown = function() {
+		console.log('down');
+	}
+
 
 	window.snakeWorld = snakeWorld;
 
@@ -137,19 +152,19 @@ $(function(){
 	$('#canvas').attr('width', width);
 	$('#canvas').attr('height', height);
 
-	new snakeWorld( $('#canvas')[0] );
+	window. SW = new snakeWorld( $('#canvas')[0] );
 
 	$(document).keydown(function(e) {
 		var key = e.which;
 
 		if(key == "37"){
-			snakeWorld.moveLeft();
+			SW.moveLeft();
 		} else if(key == "38") {
-			snakeWorld.moveUp();
+			SW.moveUp();
 		} else if(key == "39") {
-			snakeWorld.moveRight();
+			SW.moveRight();
 		} else if(key == "40") {
-			snakeWorld.moveDown();
+			SW.moveDown();
 		} else if(key == '32') {
 			// spacebar
 		}
