@@ -2,7 +2,7 @@
 
 	"use strict";
 
-	window.snakeWorld = function( _canvas ) {
+	window.SnakeWorld = function( _canvas ) {
 		if(! _canvas instanceof HTMLCanvasElement)
 			throw new Error('Invalid element');
 
@@ -15,18 +15,20 @@
 		// Init socket and bind event listeners
 		var socket = this.vars.socket = io.connect('http://127.0.0.1:8080');
 
-		socket.on('log', this.socket.log.bind(this));
-		socket.on('snake', this.socket.snake.bind(this));
-		socket.on('add', this.socket.add.bind(this));
-		socket.on('remove', this.socket.remove.bind(this));
-		socket.on('move', this.socket.move.bind(this));
+		socket.on('log', this.signals.log.bind(this));
+		socket.on('snake', this.signals.snake.bind(this));
+		socket.on('add', this.signals.add.bind(this));
+		socket.on('remove', this.signals.remove.bind(this));
+		socket.on('move', this.signals.move.bind(this));
 
 		// Draw grid in canvas
 		this.drawGrid();
 	};
 
-	// Default vars
-	snakeWorld.prototype.vars = {
+	/**
+	 * Describes the variables used by this snake
+	 */
+	SnakeWorld.prototype.vars = {
 		'id': 0,
 		'grid': {
 			'width': 100,
@@ -39,8 +41,10 @@
 		}
 	};
 
-	// Event bindings for socket io
-	snakeWorld.prototype.socket = {
+	/**
+	 * Socket bindings
+	 */
+	SnakeWorld.prototype.signals = {
 		log: function( data ) {
 			console.log( '[SOCKET LOG]', data );
 		},
@@ -67,8 +71,10 @@
 		}
 	};
 
-	// Canvas functions
-	snakeWorld.prototype.drawGrid = function() {
+	/**
+	 * Draw the grid
+	 */
+	SnakeWorld.prototype.drawGrid = function() {
 
 		var it = 0,
 		    ctx = this.vars.context,
@@ -93,7 +99,10 @@
 
 	}
 
-	snakeWorld.prototype.drawPoint = function(x, y, color) {
+	/**
+	 * draw a single point
+	 */
+	SnakeWorld.prototype.drawPoint = function(x, y, color) {
 
 		// adjust
 		// @TODO: make this dinamic
@@ -112,7 +121,10 @@
 
 	}
 
-	snakeWorld.prototype.removePoint = function(x, y) {
+	/**
+	 * remove a drawn point
+	 */
+	SnakeWorld.prototype.removePoint = function(x, y) {
 
 		// adjust
 		// @TODO: make this dinamic
@@ -130,16 +142,24 @@
 		ctx.fill();
 	}
 
-	snakeWorld.prototype.move = function(x, y) {
-		this.vars.socket.emit('move', {
-			id: this.vars.id,
-			x: x,
-			y: y,
-		});
-		this.removePoint(this.vars.self.x, this.vars.self.y);
-		this.vars.self.x += x;
-		this.vars.self.y += y;
-		this.drawPoint(this.vars.self.x, this.vars.self.y, 'green');
+	/**
+	 * Local events
+	 */
+	SnakeWorld.prototype.events = {
+		/**
+		 * The user triggered a move event vía the keyboard or a touch gesture
+		 */
+		move: function(x, y) {
+			this.vars.socket.emit('move', {
+				id: this.vars.id,
+				x: x,
+				y: y,
+			});
+			this.removePoint(this.vars.self.x, this.vars.self.y);
+			this.vars.self.x += x;
+			this.vars.self.y += y;
+			this.drawPoint(this.vars.self.x, this.vars.self.y, 'green');
+		},
 	}
 
 })();
@@ -154,19 +174,19 @@ $(function(){
 	$('#canvas').attr('width', width);
 	$('#canvas').attr('height', height);
 
-	window. SW = new snakeWorld( $('#canvas')[0] );
+	window. SW = new SnakeWorld( $('#canvas')[0] );
 
 	$(document).keydown(function(e) {
 		var key = e.which;
 
 		if(key == "37"){
-			SW.move(-1, 0);
+			SW.events.move.call(SW, -1, 0);
 		} else if(key == "38") {
-			SW.move(0, -1);
+			SW.events.move.call(SW, 0, -1);
 		} else if(key == "39") {
-			SW.move(1, 0);
+			SW.events.move.call(SW, 1, 0);
 		} else if(key == "40") {
-			SW.move(0, 1);
+			SW.events.move.call(SW, 0, 1);
 		} else if(key == '32') {
 			// spacebar
 		}
