@@ -13,7 +13,7 @@
 		this.vars.context = canvas.getContext('2d');
 
 		// Init socket and bind event listeners
-		var socket = this.vars.socket = io.connect('http://127.0.0.1:8080');
+		var socket = this.vars.socket = io.connect('http://192.168.0.131:8080');
 
 		socket.on('log', this.signals.log.bind(this));
 		socket.on('snake', this.signals.snake.bind(this));
