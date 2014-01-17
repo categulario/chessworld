@@ -2,7 +2,7 @@
 
 	"use strict";
 
-	var snakeWorld = function( _canvas ) {
+	window.snakeWorld = function( _canvas ) {
 		if(! _canvas instanceof HTMLCanvasElement)
 			throw new Error('Invalid element');
 
@@ -136,9 +136,6 @@
 	snakeWorld.prototype.moveDown = function() {
 		console.log('down');
 	}
-
-
-	window.snakeWorld = snakeWorld;
 
 })();
 
