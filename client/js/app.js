@@ -30,7 +30,11 @@
 			'width': 100,
 			'height': 50
 		},
-		'snakes': {}
+		'snakes': {},
+		'self': {
+			x: 0,
+			y: 0,
+		}
 	};
 
 	// Event bindings for socket io
@@ -115,6 +119,10 @@
 		ctx.fill();
 	}
 
+	snakeWorld.prototype.moveLeft = function() {
+		this.vars.
+	}
+
 	window.snakeWorld = snakeWorld;
 
 })();
@@ -135,13 +143,13 @@ $(function(){
 		var key = e.which;
 
 		if(key == "37"){
-			// left
+			snakeWorld.moveLeft();
 		} else if(key == "38") {
-			// up
+			snakeWorld.moveUp();
 		} else if(key == "39") {
-			// right
+			snakeWorld.moveRight();
 		} else if(key == "40") {
-			// down
+			snakeWorld.moveDown();
 		} else if(key == '32') {
 			// spacebar
 		}
