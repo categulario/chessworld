@@ -19,6 +19,7 @@
 		socket.on('snake', this.socket.snake.bind(this));
 		socket.on('add', this.socket.add.bind(this));
 		socket.on('remove', this.socket.remove.bind(this));
+		socket.on('move', this.socket.move.bind(this));
 
 		// Draw grid in canvas
 		this.drawGrid();
@@ -57,7 +58,12 @@
 			var data = this.vars.snakes[id];
 			this.removePoint(data.x, data.y);
 			delete this.vars.snakes[id];
-			console.log('removed');
+		},
+		move: function(data) {
+			this.removePoint(this.vars.snakes[data.id].x, this.vars.snakes[data.id].y);
+			this.vars.snakes[data.id].x += data.x;
+			this.vars.snakes[data.id].y += data.y;
+			this.drawPoint(this.vars.snakes[data.id].x, this.vars.snakes[data.id].y);
 		}
 	};
 

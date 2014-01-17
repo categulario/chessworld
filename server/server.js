@@ -35,7 +35,8 @@
 		});
 
 		socket.on('move', function(data) {
-			console.log(data);
+			// Send broadcast
+			broadcast('move', client_id, data);
 		});
 
 		// Advices
@@ -45,18 +46,31 @@
 		// Send broadcast
 		for(var i in online.clients) {
 			if(i != client_id) {
+				// sent to the rest of the clients
 				online.clients[i].socket.emit('add', online.clients[ client_id ].snake);
+
+				// sent to the connected client
 				socket.emit('add', online.clients[ i ].snake);
 			}
 		}
 
 	});
 
-	/*
-	* addPlayer
-	* ~ Initializes a client's snake
-	*/
+	/**
+	 * broadcast a signal to all the clients except for the specified one
+	 */
+	function broadcast(signal, id, data) {
+		for(var i in online.clients) {
+			if(i != id) {
+				online.clients[i].socket.emit(signal, data);
+			}
+		}
+	}
 
+	/**
+	 * addPlayer
+	 * ~ Initializes a client's snake
+	 */
 	function addPlayer(client_id) {
 		var client = online.clients[client_id];
 
