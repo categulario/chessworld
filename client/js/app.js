@@ -26,6 +26,7 @@
 
 	// Default vars
 	snakeWorld.prototype.vars = {
+		'id': 0,
 		'grid': {
 			'width': 100,
 			'height': 50
@@ -42,8 +43,10 @@
 		log: function( data ) {
 			console.log( '[SOCKET LOG]', data );
 		},
-		snake: function(data) {
+		snake: function(data) { // self
 			this.vars.id = data.id;
+			this.vars.self.x = data.x;
+			this.vars.self.y = data.y;
 			this.drawPoint(data.x, data.y, 'green');
 		},
 		add: function(data) {
@@ -54,6 +57,7 @@
 			var data = this.vars.snakes[id];
 			this.removePoint(data.x, data.y);
 			delete this.vars.snakes[id];
+			console.log('removed');
 		}
 	};
 
@@ -120,21 +124,16 @@
 		ctx.fill();
 	}
 
-	snakeWorld.prototype.moveLeft = function() {
+	snakeWorld.prototype.move = function(x, y) {
 		this.vars.socket.emit('move', {
 			id: this.vars.id,
-			x: -1,
-			y: 0,
+			x: x,
+			y: y,
 		});
-	}
-	snakeWorld.prototype.moveRight = function() {
-		console.log('right');
-	}
-	snakeWorld.prototype.moveUp = function() {
-		console.log('up');
-	}
-	snakeWorld.prototype.moveDown = function() {
-		console.log('down');
+		this.removePoint(this.vars.self.x, this.vars.self.y);
+		this.vars.self.x += x;
+		this.vars.self.y += y;
+		this.drawPoint(this.vars.self.x, this.vars.self.y, 'green');
 	}
 
 })();
@@ -155,13 +154,13 @@ $(function(){
 		var key = e.which;
 
 		if(key == "37"){
-			SW.moveLeft();
+			SW.move(-1, 0);
 		} else if(key == "38") {
-			SW.moveUp();
+			SW.move(0, -1);
 		} else if(key == "39") {
-			SW.moveRight();
+			SW.move(1, 0);
 		} else if(key == "40") {
-			SW.moveDown();
+			SW.move(0, 1);
 		} else if(key == '32') {
 			// spacebar
 		}

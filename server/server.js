@@ -43,11 +43,12 @@
 		socket.emit('log', 'fully initialized :) - good luck');
 
 		// Send broadcast
-		for(var i in online.clients)
+		for(var i in online.clients) {
 			if(i != client_id) {
 				online.clients[i].socket.emit('add', online.clients[ client_id ].snake);
 				socket.emit('add', online.clients[ i ].snake);
 			}
+		}
 
 	});
 
