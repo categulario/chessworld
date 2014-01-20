@@ -1,7 +1,7 @@
-Multiplayer Infinite Snake
-==========================
+Multiplayer Infinite Chess game
+===============================
 
-The traditional snake game on multiplayer mode on an infinite world
+The traditional chess game on multiplayer mode on an infinite world
 
 ## Development instructions
 
